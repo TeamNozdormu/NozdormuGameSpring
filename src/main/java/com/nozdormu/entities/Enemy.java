@@ -1,14 +1,25 @@
 package com.nozdormu.entities;
 
-import com.nozdormu.enumerations.EnemyType;
+import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.nozdormu.enumerations.EnemyType;
 
 @Entity
 @Table(name = "enemies")
-public class Enemy {
+public class Enemy implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
