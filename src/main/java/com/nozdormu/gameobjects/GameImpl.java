@@ -21,7 +21,9 @@ import com.nozdormu.utilities.GameSettings;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class GameImpl implements Game, Runnable {
 
     public GameMap map;
@@ -65,7 +67,8 @@ public class GameImpl implements Game, Runnable {
         this.display = display;
     }
 
-    private MouseInput getMouseInput() {
+    @SuppressWarnings("unused")
+	private MouseInput getMouseInput() {
         return this.mouseInput;
     }
 
@@ -81,6 +84,7 @@ public class GameImpl implements Game, Runnable {
         this.thread = thread;
     }
 
+    @SuppressWarnings("unused")
     private KeyboardInput getKeyboardInput() {
         return this.keyboardInput;
     }
@@ -121,6 +125,7 @@ public class GameImpl implements Game, Runnable {
         this.menuState = menuState;
     }
 
+    @SuppressWarnings("unused")
     private State getGameOverState() {
         return this.gameOverState;
     }
@@ -129,7 +134,8 @@ public class GameImpl implements Game, Runnable {
         this.gameOverState = gameOverState;
     }
 
-    private State getHighScoreState() {
+    @SuppressWarnings("unused")
+	private State getHighScoreState() {
         return this.highScoreState;
     }
 
@@ -137,7 +143,8 @@ public class GameImpl implements Game, Runnable {
         this.highScoreState = highScoreState;
     }
 
-    private State getChooseDifficulty() {
+    @SuppressWarnings("unused")
+	private State getChooseDifficulty() {
         return this.ChooseDifficulty;
     }
 
@@ -145,7 +152,8 @@ public class GameImpl implements Game, Runnable {
         ChooseDifficulty = chooseDifficulty;
     }
 
-    private State getChooseSideState() {
+    @SuppressWarnings("unused")
+	private State getChooseSideState() {
         return this.chooseSideState;
     }
 
@@ -153,6 +161,7 @@ public class GameImpl implements Game, Runnable {
         this.chooseSideState = chooseSideState;
     }
 
+    @SuppressWarnings("unused")
     private State getIntroState() {
         return this.IntroState;
     }
@@ -161,6 +170,7 @@ public class GameImpl implements Game, Runnable {
         IntroState = introState;
     }
 
+    @SuppressWarnings("unused")
     private State getIntroTaskState() {
         return this.IntroTaskState;
     }
