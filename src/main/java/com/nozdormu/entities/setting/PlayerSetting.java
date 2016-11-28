@@ -21,7 +21,7 @@ public class PlayerSetting {
     private Integer defaultSpeed;   //15
 
     @Column(name = "default_name", nullable = false)
-    private Integer defaultName;    //"Nozdormu Warrior"
+    private String defaultName;    //"Nozdormu Warrior"
 
     @Column(name = "default_loc_x", nullable = false)
     private Integer defaultLocationX;   //GAME_WIDTH / 2 - 40;
@@ -65,11 +65,11 @@ public class PlayerSetting {
         this.defaultSpeed = defaultSpeed;
     }
 
-    public Integer getDefaultName() {
+    public String getDefaultName() {
         return defaultName;
     }
 
-    public void setDefaultName(Integer defaultName) {
+    public void setDefaultName(String defaultName) {
         this.defaultName = defaultName;
     }
 

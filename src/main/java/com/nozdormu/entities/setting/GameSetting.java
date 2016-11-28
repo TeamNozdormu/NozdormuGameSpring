@@ -1,12 +1,16 @@
 package com.nozdormu.entities.setting;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "game_setting")
-public class GameSetting {
+public class GameSetting implements Serializable{
 
-    @Id
+	private static final long serialVersionUID = 2236973499184667373L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
