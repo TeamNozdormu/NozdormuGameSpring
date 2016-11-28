@@ -1,5 +1,12 @@
 package com.nozdormu.gameobjects;
 
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+
+import org.springframework.stereotype.Component;
+
+import com.nozdormu.entities.setting.GameSetting;
+import com.nozdormu.entities.setting.PlayerSetting;
 import com.nozdormu.eventhandlers.KeyboardInput;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
 import com.nozdormu.gameobjects.interfaces.Game;
@@ -16,12 +23,11 @@ import com.nozdormu.gamestates.menustates.main.MainMenuStateImpl;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.Display;
 import com.nozdormu.graphics.GameMap;
+import com.nozdormu.service.setting.GameSettingService;
+import com.nozdormu.service.setting.PlayerSettingService;
 import com.nozdormu.utilities.GameSettings;
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
-
-import org.springframework.stereotype.Component;
+import javassist.expr.NewArray;
 
 @Component
 public class GameImpl implements Game, Runnable {
@@ -42,6 +48,19 @@ public class GameImpl implements Game, Runnable {
     private State chooseSideState;
     private State IntroState;
     private State IntroTaskState;
+    
+
+	//spring game
+    private GameSettingService gameSettingService;
+    private PlayerSettingService playerSettingService;
+    private GameSetting gameSetting;
+    private PlayerSetting playerSetting;
+    
+    public GameImpl(GameSettingService gameSettingService, PlayerSettingService playerSettingService) {
+		super();
+		this.setGameSettingService(gameSettingService);
+		this.setPlayerSettingService(playerSettingService);
+	}
 
     public boolean isRunning() {
         return this.isRunning;
@@ -178,12 +197,47 @@ public class GameImpl implements Game, Runnable {
     private void setIntroTaskState(State introTaskState) {
         IntroTaskState = introTaskState;
     }
+    
+    public GameSetting getGameSetting() {
+		return this.gameSetting;
+	}
 
-    private void init() {
-        this.setMap(new GameMap(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT));
-        this.setDisplay(new Display(GameSettings.GAME_NAME, GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT));
-        this.setKeyboardInput(new KeyboardInput(this, this.display));
-        this.setMouseInput(new MouseInput(this.display));
+	public void setGameSetting(GameSetting gameSetting) {
+		this.gameSetting = gameSetting;
+	}
+	
+	public PlayerSetting getPlayerSetting() {
+		return this.playerSetting;
+	}
+
+	public void setPlayerSetting(PlayerSetting playerSetting) {
+		this.playerSetting = playerSetting;
+	}
+
+	public GameSettingService getGameSettingService() {
+		return this.gameSettingService;
+	}
+
+	public void setGameSettingService(GameSettingService gameSettingService) {
+		this.gameSettingService = gameSettingService;
+	}
+
+	public PlayerSettingService getPlayerSettingService() {
+		return this.playerSettingService;
+	}
+
+	public void setPlayerSettingService(PlayerSettingService playerSettingService) {
+		this.playerSettingService = playerSettingService;
+	}
+
+	private void init() {
+    	this.createGameSetting();
+    	this.createPlayerSetting();
+    	this.createGameMap();
+    	this.createDisplay();    	
+        this.setKeyboardInput(new KeyboardInput(this, this.getDisplay()));
+        this.setMouseInput(new MouseInput(this.getDisplay()));
+        
         this.setGameState(new GameStateImpl());
         this.setMenuState(new MainMenuStateImpl());
         this.setChooseDifficulty(new ChooseDifficultyStateImpl());
@@ -194,6 +248,38 @@ public class GameImpl implements Game, Runnable {
         this.setHighScoreState(new HighScoresStateImpl("Descending"));
         StateManager.setCurrentState(this.getMenuState());
     }
+	
+	private void createGameSetting() {
+		this.setGameSetting(new GameSetting());
+		this.getGameSetting().setGameHeight(1000);
+		this.getGameSetting().setGameWidth(1000);
+		this.getGameSetting().setGameName("Spring game Nozdormu version 1");
+		
+		this.gameSettingService.create(this.getGameSetting());
+	}
+	
+	private void createPlayerSetting() {
+		this.setPlayerSetting(new PlayerSetting());
+		this.getPlayerSetting().setDefaultName("Ivanof");
+		this.getPlayerSetting().setDefaultLocationX(this.getGameSetting().getGameWidth() / 2 - 40);	//GAME_WIDTH / 2 - 40;
+		this.getPlayerSetting().setDefaultLocationY(this.getGameSetting().getGameHeight() - 70);	//GAME_HEIGHT - 70
+		this.getPlayerSetting().setDefaultScores(0);
+		this.getPlayerSetting().setDefaultSpeed(15);
+		this.getPlayerSetting().setInitialNumberOfLives(3);
+		
+		this.playerSettingService.create(this.getPlayerSetting());
+	}
+	
+	private void createGameMap() {
+		this.setMap(new GameMap(this.gameSetting.getGameWidth(), this.gameSetting.getGameHeight()));
+	}
+	
+	private void createDisplay() {
+		this.setDisplay(new Display(
+				this.gameSetting.getGameName(), 
+				this.gameSetting.getGameWidth(), 
+				this.gameSetting.getGameHeight()));
+	}
 
     public void displayFrame() {
         //Display the current frame using the display frame;
