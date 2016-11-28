@@ -42,7 +42,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 
     public GameStateImpl() {
         if (!isLevelGained) {
-            this.score = 0;
+            GameStateImpl.score = 0;
         } else {
             isLevelGained = false;
         }
@@ -225,7 +225,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
         //change difficulty
         if (getEnemiesList().size() < 5 ) {
             if (this.getEnemyTypes() == 5) {
-                this.createSturdyEnemies(player.getLevel());
+                this.createSturdyEnemies(PlayerImpl.getLevel());
             } else {
                 this.addNewEasyEnemy();
             }
@@ -275,9 +275,9 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 
         g.setFont(new Font("redensek", Font.PLAIN, 25));
         g.setColor(Color.RED);
-        g.drawString(String.format("Level: %d", player.getLevel()), 560, 50);
-        g.drawString(String.format("Next Level: %d", LEVEL_POINTS * player.getLevel()), 560, 80);
-        g.drawString(String.format("Score: %d", this.score), 560, 110);
+        g.drawString(String.format("Level: %d", PlayerImpl.getLevel()), 560, 50);
+        g.drawString(String.format("Next Level: %d", LEVEL_POINTS * PlayerImpl.getLevel()), 560, 80);
+        g.drawString(String.format("Score: %d", GameStateImpl.score), 560, 110);
         g.drawString("Lives: ", 560, 140);
         g.drawString(String.format("Monsters: %d", getEnemiesList().size()), 560, 170);
         g.drawString(String.format("Monster to kill: %d", (MISSED_ENEMIES - AbstractEnemy.passed)), 500, 200);
@@ -305,7 +305,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
                                     RandomGenerator.getNextIntRandom(GameSettings.GAME_WIDTH - 100),
                                     -100,
                                     RandomGenerator.getNextIntRandom(4),
-                                    RandomGenerator.getNextIntRandom(player.getLevel() + 1)));
+                                    RandomGenerator.getNextIntRandom(PlayerImpl.getLevel() + 1)));
         this.setEnemyTypes(0);
     }
 
@@ -327,13 +327,13 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
                 PlayMusic.archer.stop();
             }
             PlayMusic.fire.stop();
-            player.setLevel(1);
+            PlayerImpl.setLevel(1);
             StateManager.setCurrentState(new GameOverState());
         }
     }
 
     private void increaseLevel() {
-        if (this.score >= LEVEL_POINTS * player.getLevel()) {
+        if (GameStateImpl.score >= LEVEL_POINTS * PlayerImpl.getLevel()) {
             if (MouseInput.isMage) {
                 PlayMusic.mage.stop();
             } else {
@@ -342,8 +342,8 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 
             PlayMusic.fire.stop();
 
-            player.inceraseLevel();
-            this.isLevelGained = true;
+            PlayerImpl.inceraseLevel();
+            GameStateImpl.isLevelGained = true;
 
             StateManager.setCurrentState(new GainLevelState());
         }
