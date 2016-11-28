@@ -1,11 +1,13 @@
 package com.nozdormu.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nozdormu.entities.Enemy;
 import com.nozdormu.repository.EnemyRepository;
 import com.nozdormu.service.EnemyService;
 
+@Component
 public class EnemyServiceImpl implements EnemyService{
 	
 	@Autowired

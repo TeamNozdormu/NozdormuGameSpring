@@ -1,11 +1,13 @@
 package com.nozdormu.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nozdormu.entities.Player;
 import com.nozdormu.repository.PlayerRepository;
 import com.nozdormu.service.PlayerService;
 
+@Component
 public class PlayerServiceImpl implements PlayerService{
 	
 	@Autowired
