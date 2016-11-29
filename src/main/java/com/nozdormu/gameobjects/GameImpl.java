@@ -3,16 +3,14 @@ package com.nozdormu.gameobjects;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.nozdormu.entities.setting.GameSetting;
 import com.nozdormu.entities.setting.PlayerSetting;
 import com.nozdormu.eventhandlers.KeyboardInput;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
-import com.nozdormu.gameobjects.entities.PlayerImpl;
 import com.nozdormu.gameobjects.interfaces.Game;
 import com.nozdormu.gamestates.AbstractState;
 import com.nozdormu.gamestates.GameStateImpl;
+import com.nozdormu.gamestates.interfaces.Serviceable;
 import com.nozdormu.gamestates.interfaces.State;
 import com.nozdormu.gamestates.menustates.gameplay.GameOverState;
 import com.nozdormu.gamestates.menustates.gameplay.IntroState;
@@ -24,14 +22,13 @@ import com.nozdormu.gamestates.menustates.main.MainMenuStateImpl;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.Display;
 import com.nozdormu.graphics.GameMap;
-import com.nozdormu.graphics.utililies.Assets;
 import com.nozdormu.service.EnemyService;
 import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;
 import com.nozdormu.service.setting.PlayerSettingService;
 import com.nozdormu.utilities.GameSettings;
 
-public class GameImpl implements Game, Runnable {
+public class GameImpl implements Game, Serviceable, Runnable {
 
     public GameMap map;
     private Display display;
@@ -265,7 +262,7 @@ public class GameImpl implements Game, Runnable {
     	this.createDisplay();  
         this.setKeyboardInput(new KeyboardInput(this, this.getDisplay()));
         this.setMouseInput(new MouseInput(this.getDisplay()));
-        this.setGameState(new GameStateImpl());
+        this.setGameState(new GameStateImpl(this));
         
         this.setMenuState(new MainMenuStateImpl());
         this.setChooseDifficulty(new ChooseDifficultyStateImpl());
