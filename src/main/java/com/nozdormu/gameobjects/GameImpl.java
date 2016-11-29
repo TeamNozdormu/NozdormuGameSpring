@@ -3,12 +3,13 @@ package com.nozdormu.gameobjects;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nozdormu.entities.setting.GameSetting;
 import com.nozdormu.entities.setting.PlayerSetting;
 import com.nozdormu.eventhandlers.KeyboardInput;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
+import com.nozdormu.gameobjects.entities.PlayerImpl;
 import com.nozdormu.gameobjects.interfaces.Game;
 import com.nozdormu.gamestates.AbstractState;
 import com.nozdormu.gamestates.GameStateImpl;
@@ -23,13 +24,13 @@ import com.nozdormu.gamestates.menustates.main.MainMenuStateImpl;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.Display;
 import com.nozdormu.graphics.GameMap;
+import com.nozdormu.graphics.utililies.Assets;
+import com.nozdormu.service.EnemyService;
+import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;
 import com.nozdormu.service.setting.PlayerSettingService;
 import com.nozdormu.utilities.GameSettings;
 
-import javassist.expr.NewArray;
-
-@Component
 public class GameImpl implements Game, Runnable {
 
     public GameMap map;
@@ -49,17 +50,28 @@ public class GameImpl implements Game, Runnable {
     private State IntroState;
     private State IntroTaskState;
     
-
-	//spring game
-    private GameSettingService gameSettingService;
-    private PlayerSettingService playerSettingService;
+    //spring game
+    //settings
     private GameSetting gameSetting;
     private PlayerSetting playerSetting;
+
+    //services
+    private GameSettingService gameSettingService;
+    private PlayerSettingService playerSettingService;
+    private PlayerService playerService;
+    private EnemyService enemyService;
     
-    public GameImpl(GameSettingService gameSettingService, PlayerSettingService playerSettingService) {
+    
+    public GameImpl(
+    		GameSettingService gameSettingService, 
+    		PlayerSettingService playerSettingService,
+    		PlayerService playerService,
+    		EnemyService enemyService) {
 		super();
 		this.setGameSettingService(gameSettingService);
 		this.setPlayerSettingService(playerSettingService);
+		this.setPlayerService(playerService);
+		this.setEnemyService(enemyService);
 	}
 
     public boolean isRunning() {
@@ -229,16 +241,32 @@ public class GameImpl implements Game, Runnable {
 	public void setPlayerSettingService(PlayerSettingService playerSettingService) {
 		this.playerSettingService = playerSettingService;
 	}
+	
+	public PlayerService getPlayerService() {
+		return this.playerService;
+	}
+
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+
+	public EnemyService getEnemyService() {
+		return this.enemyService;
+	}
+
+	public void setEnemyService(EnemyService enemyService) {
+		this.enemyService = enemyService;
+	}
 
 	private void init() {
     	this.createGameSetting();
     	this.createPlayerSetting();
     	this.createGameMap();
-    	this.createDisplay();    	
+    	this.createDisplay();  
         this.setKeyboardInput(new KeyboardInput(this, this.getDisplay()));
         this.setMouseInput(new MouseInput(this.getDisplay()));
-        
         this.setGameState(new GameStateImpl());
+        
         this.setMenuState(new MainMenuStateImpl());
         this.setChooseDifficulty(new ChooseDifficultyStateImpl());
         this.setChooseSideState(new ChooseSideStateImpl());
@@ -251,10 +279,11 @@ public class GameImpl implements Game, Runnable {
 	
 	private void createGameSetting() {
 		this.setGameSetting(new GameSetting());
-		this.getGameSetting().setGameHeight(1000);
-		this.getGameSetting().setGameWidth(1000);
+		this.getGameSetting().setGameHeight(600);
+		this.getGameSetting().setGameWidth(800);
 		this.getGameSetting().setGameName("Spring game Nozdormu version 1");
 		
+		//save game setting in DB
 		this.gameSettingService.create(this.getGameSetting());
 	}
 	
@@ -267,6 +296,7 @@ public class GameImpl implements Game, Runnable {
 		this.getPlayerSetting().setDefaultSpeed(15);
 		this.getPlayerSetting().setInitialNumberOfLives(3);
 		
+		//save player setting in DB
 		this.playerSettingService.create(this.getPlayerSetting());
 	}
 	
