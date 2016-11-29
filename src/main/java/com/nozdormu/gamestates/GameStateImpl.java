@@ -17,6 +17,7 @@ import com.nozdormu.gameobjects.entities.PlayerImpl;
 import com.nozdormu.gameobjects.factory.Factory;
 import com.nozdormu.gamestates.interfaces.Displayable;
 import com.nozdormu.gamestates.interfaces.GameState;
+import com.nozdormu.gamestates.interfaces.Serviceable;
 import com.nozdormu.gamestates.menustates.gameplay.GainLevelState;
 import com.nozdormu.gamestates.menustates.gameplay.GameOverState;
 import com.nozdormu.gamestates.utilities.StateManager;
@@ -40,7 +41,12 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
     private int enemyTypes = 1;
     private boolean explode;
     private int cropX, cropY;
-    private int cropXMonster = 0, cropYMonster = 0;    
+    private int cropXMonster = 0, cropYMonster = 0; 
+    
+    public GameStateImpl(Serviceable services) {
+    	this();
+//      services.getPlayerService().create(player);
+    }
     
     public GameStateImpl() {
         if (!isLevelGained) {
@@ -55,6 +61,8 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
         //TODO create user from DB
         player = new PlayerImpl(PlayerSettings.PLAYER_SET_X, PlayerSettings.PLAYER_SET_Y, PlayerSettings
                 .PLAYER_DEFAULT_NAME, PlayerSettings.PLAYER_DEFAULT_SPEED, LEVEL_POINTS);
+        
+
         
         enemiesList = new LinkedList<>();
         bonusList = new LinkedList<>();
