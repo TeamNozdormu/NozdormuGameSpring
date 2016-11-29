@@ -1,5 +1,12 @@
 package com.nozdormu.gamestates;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.nozdormu.eventhandlers.utilities.MouseInput;
 import com.nozdormu.eventhandlers.utilities.PlayMusic;
 import com.nozdormu.gameobjects.base.AbstractBonus;
@@ -8,20 +15,15 @@ import com.nozdormu.gameobjects.entities.BulletImpl;
 import com.nozdormu.gameobjects.entities.EasyEnemy;
 import com.nozdormu.gameobjects.entities.PlayerImpl;
 import com.nozdormu.gameobjects.factory.Factory;
+import com.nozdormu.gamestates.interfaces.Displayable;
 import com.nozdormu.gamestates.interfaces.GameState;
 import com.nozdormu.gamestates.menustates.gameplay.GainLevelState;
 import com.nozdormu.gamestates.menustates.gameplay.GameOverState;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.utililies.Assets;
-import com.nozdormu.gamestates.interfaces.Displayable;
-
 import com.nozdormu.utilities.GameSettings;
 import com.nozdormu.utilities.PlayerSettings;
 import com.nozdormu.utilities.RandomGenerator;
-
-import java.awt.*;
-import java.util.LinkedList;
-import java.util.List;
 
 public class GameStateImpl extends AbstractState implements GameState, Displayable {
 
@@ -38,30 +40,32 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
     private int enemyTypes = 1;
     private boolean explode;
     private int cropX, cropY;
-    private int cropXMonster = 0, cropYMonster = 0;
-
+    private int cropXMonster = 0, cropYMonster = 0;    
+    
     public GameStateImpl() {
         if (!isLevelGained) {
             GameStateImpl.score = 0;
         } else {
             isLevelGained = false;
         }
-
+        
         init();
         factory = new Factory();
         bulletsList = new LinkedList<>();
+        //TODO create user from DB
         player = new PlayerImpl(PlayerSettings.PLAYER_SET_X, PlayerSettings.PLAYER_SET_Y, PlayerSettings
                 .PLAYER_DEFAULT_NAME, PlayerSettings.PLAYER_DEFAULT_SPEED, LEVEL_POINTS);
+        
         enemiesList = new LinkedList<>();
         bonusList = new LinkedList<>();
         enemiesList.add(new EasyEnemy(RandomGenerator.getNextIntRandom(725), -100, 1, 2));
 
         if (MouseInput.isEasyButton) {
-            GameStateImpl.LEVEL_POINTS = 100;
-        } else if (MouseInput.isMediumButton){
-            GameStateImpl.LEVEL_POINTS = 200;
-        } else {
             GameStateImpl.LEVEL_POINTS = 300;
+        } else if (MouseInput.isMediumButton){
+            GameStateImpl.LEVEL_POINTS = 600;
+        } else {
+            GameStateImpl.LEVEL_POINTS = 900;
         }
 
     }
