@@ -1,9 +1,9 @@
 package com.nozdormu.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.nozdormu.entities.Enemy;
 
-public interface EnemyRepository extends JpaRepository<Enemy, Long> {
+public interface EnemyRepository extends CrudRepository<Enemy, Long> {
 	Enemy findEnemyById(Long id);
 }

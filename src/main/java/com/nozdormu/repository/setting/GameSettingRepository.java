@@ -1,11 +1,11 @@
 package com.nozdormu.repository.setting;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.nozdormu.entities.setting.GameSetting;
+import com.nozdormu.entities.settings.GameSetting;
 
 @Repository
-public interface GameSettingRepository extends JpaRepository<GameSetting, Long>{
+public interface GameSettingRepository extends CrudRepository<GameSetting, Long>{
 	GameSetting findGameSettingByGameWidth(Integer gameWidth);
 }

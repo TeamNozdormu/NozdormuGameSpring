@@ -1,9 +1,9 @@
 package com.nozdormu.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.nozdormu.entities.Bullet;
 
-public interface BulletRepository extends JpaRepository<Bullet, Long>{
+public interface BulletRepository extends CrudRepository<Bullet, Long>{
 	Bullet findBulletById(Long id);
 }
