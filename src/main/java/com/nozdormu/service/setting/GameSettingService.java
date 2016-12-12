@@ -1,7 +1,7 @@
 package com.nozdormu.service.setting;
 
-import com.nozdormu.entities.setting.GameSetting;
+import com.nozdormu.dto.settings.GameSettingDto;
 
 public interface GameSettingService {
-	void create(GameSetting gameSetting);
+	void create(GameSettingDto gameSetting);
 }
