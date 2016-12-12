@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.nozdormu.gameobjects.GameImpl;
 import com.nozdormu.gameobjects.interfaces.Game;
+import com.nozdormu.parser.interfaces.ModelParser;
 import com.nozdormu.service.EnemyService;
 import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;
@@ -25,6 +26,9 @@ public class Terminal implements CommandLineRunner {
     
     @Autowired
     private EnemyService enemyService;    
+    
+    @Autowired
+    private ModelParser modelParser;
 	
 	@Override
 	public void run(String... arg0) throws Exception {			
@@ -32,7 +36,8 @@ public class Terminal implements CommandLineRunner {
 				this.gameSettingService, 
 				this.playerSettingService,
 				this.playerService,
-				this.enemyService);
+				this.enemyService,
+				this.modelParser);
 		game.start();                  
 	}	
 }
