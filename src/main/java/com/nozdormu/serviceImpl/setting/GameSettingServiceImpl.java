@@ -3,7 +3,9 @@ package com.nozdormu.serviceImpl.setting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nozdormu.entities.setting.GameSetting;
+import com.nozdormu.dto.settings.GameSettingDto;
+import com.nozdormu.entities.settings.GameSetting;
+import com.nozdormu.parser.interfaces.ModelParser;
 import com.nozdormu.repository.setting.GameSettingRepository;
 import com.nozdormu.service.setting.GameSettingService;
 
@@ -12,10 +14,14 @@ public class GameSettingServiceImpl implements GameSettingService{
 	
 	@Autowired
 	private GameSettingRepository gameSettingRepository;
+	
+	@Autowired
+	private ModelParser modelParser;
 
 	@Override
-	public void create(GameSetting gameSetting) {
-		this.getGameSettingRepository().saveAndFlush(gameSetting);
+	public void create(GameSettingDto gameSettingDto) {
+		GameSetting gameSetting = this.getModelParser().convert(gameSettingDto, GameSetting.class);
+		this.getGameSettingRepository().save(gameSetting);
 	}
 
 	public GameSettingRepository getGameSettingRepository() {
@@ -25,5 +31,14 @@ public class GameSettingServiceImpl implements GameSettingService{
 	public void setGameSettingRepository(GameSettingRepository gameSettingRepository) {
 		this.gameSettingRepository = gameSettingRepository;
 	}
+
+	public ModelParser getModelParser() {
+		return modelParser;
+	}
+
+	public void setModelParser(ModelParser modelParser) {
+		this.modelParser = modelParser;
+	}
+	
 	
 }

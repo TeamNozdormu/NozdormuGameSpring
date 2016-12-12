@@ -15,7 +15,7 @@ public class EnemyServiceImpl implements EnemyService{
 
 	@Override
 	public void create(Enemy enemy) {
-		this.getEnemyRepository().saveAndFlush(enemy);
+		this.getEnemyRepository().save(enemy);
 	}
 
 	public EnemyRepository getEnemyRepository() {

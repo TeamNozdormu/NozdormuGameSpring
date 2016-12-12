@@ -15,7 +15,7 @@ public class BulletServiceImpl implements BulletService{
 	
 	@Override
 	public void create(Bullet bullet) {
-		this.getBulletRepository().saveAndFlush(bullet);
+		this.getBulletRepository().save(bullet);
 	}
 
 	public BulletRepository getBulletRepository() {
