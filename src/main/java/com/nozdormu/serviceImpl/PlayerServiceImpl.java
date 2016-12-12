@@ -34,4 +34,11 @@ public class PlayerServiceImpl implements PlayerService{
 		Player player = this.modelParser.convert(playerDto, Player.class);
 		this.playerRepository.save(player);
 	}
+
+
+	@Override
+	public Player getPlayerByID(Long id) {
+		return this.playerRepository.findPlayerById(id);
+	}
+
 }

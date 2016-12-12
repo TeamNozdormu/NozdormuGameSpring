@@ -3,7 +3,9 @@ package com.nozdormu.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.nozdormu.dto.EnemyDto;
 import com.nozdormu.entities.Enemy;
+import com.nozdormu.parser.interfaces.ModelParser;
 import com.nozdormu.repository.EnemyRepository;
 import com.nozdormu.service.EnemyService;
 
@@ -12,9 +14,13 @@ public class EnemyServiceImpl implements EnemyService{
 	
 	@Autowired
 	private EnemyRepository enemyRepository;
+	
+	@Autowired
+	private ModelParser modelParser;
 
 	@Override
-	public void create(Enemy enemy) {
+	public void create(EnemyDto enemyDto) {
+		Enemy enemy = this.getModelParser().convert(enemyDto, Enemy.class);
 		this.getEnemyRepository().save(enemy);
 	}
 
@@ -25,5 +31,15 @@ public class EnemyServiceImpl implements EnemyService{
 	public void setEnemyRepository(EnemyRepository enemyRepository) {
 		this.enemyRepository = enemyRepository;
 	}
+
+	public ModelParser getModelParser() {
+		return this.modelParser;
+	}
+
+	public void setModelParser(ModelParser modelParser) {
+		this.modelParser = modelParser;
+	}
+	
+	
 
 }
