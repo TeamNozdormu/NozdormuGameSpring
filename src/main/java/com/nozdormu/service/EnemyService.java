@@ -1,8 +1,7 @@
 package com.nozdormu.service;
 
-import com.nozdormu.entities.Enemy;
+import com.nozdormu.dto.EnemyDto;
 
 public interface EnemyService {
-	void create(Enemy enemy);
-
+	void create(EnemyDto enemy);
 }
