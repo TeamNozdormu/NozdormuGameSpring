@@ -1,5 +1,6 @@
 package com.nozdormu.gamestates.interfaces;
 
+import com.nozdormu.parser.interfaces.FileParser;
 import com.nozdormu.service.EnemyService;
 import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;

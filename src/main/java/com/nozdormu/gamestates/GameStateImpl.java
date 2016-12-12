@@ -7,6 +7,9 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+import com.nozdormu.dto.PLayerDto;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
 import com.nozdormu.eventhandlers.utilities.PlayMusic;
 import com.nozdormu.gameobjects.base.AbstractBonus;
@@ -26,6 +29,7 @@ import com.nozdormu.utilities.GameSettings;
 import com.nozdormu.utilities.PlayerSettings;
 import com.nozdormu.utilities.RandomGenerator;
 
+@Component
 public class GameStateImpl extends AbstractState implements GameState, Displayable {
 
     private static int LEVEL_POINTS;
@@ -42,10 +46,14 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
     private boolean explode;
     private int cropX, cropY;
     private int cropXMonster = 0, cropYMonster = 0; 
+        
+    private Serviceable services;
     
     public GameStateImpl(Serviceable services) {
     	this();
-//      services.getPlayerService().create(player);
+    	this.setServices(services);
+    	//create user in DB
+    	this.getServices().getPlayerService().create(createPlayerDto());
     }
     
     public GameStateImpl() {
@@ -59,10 +67,10 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
         factory = new Factory();
         bulletsList = new LinkedList<>();
         //TODO create user from DB
+        
+        
         player = new PlayerImpl(PlayerSettings.PLAYER_SET_X, PlayerSettings.PLAYER_SET_Y, PlayerSettings
                 .PLAYER_DEFAULT_NAME, PlayerSettings.PLAYER_DEFAULT_SPEED, LEVEL_POINTS);
-        
-
         
         enemiesList = new LinkedList<>();
         bonusList = new LinkedList<>();
@@ -77,6 +85,11 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
         }
 
     }
+    
+    private PLayerDto createPlayerDto() {    	
+    	//TODO get config from DB
+		return new PLayerDto("ivanof", 3, 0, 0, PlayerSettings.PLAYER_SET_X, PlayerSettings.PLAYER_SET_Y, PlayerSettings.PLAYER_DEFAULT_SPEED);
+	}
 
     public static PlayerImpl getPlayer() {
         return player;
@@ -174,7 +187,17 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
         this.cropYMonster = cropYMonster;
     }
 
-    public void init() {
+    public Serviceable getServices() {
+		return this.services;
+	}
+
+	public void setServices(Serviceable services) {
+		this.services = services;
+	}
+	
+	
+
+	public void init() {
         Assets.init();
     }
 
