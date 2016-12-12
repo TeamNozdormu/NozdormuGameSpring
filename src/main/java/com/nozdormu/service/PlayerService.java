@@ -1,7 +1,7 @@
 package com.nozdormu.service;
 
-import com.nozdormu.entities.Player;
+import com.nozdormu.dto.PLayerDto;
 
 public interface PlayerService {
-	void create(Player player);
+	void create(PLayerDto player);
 }

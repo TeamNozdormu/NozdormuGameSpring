@@ -1,10 +1,11 @@
 package com.nozdormu.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
+import com.nozdormu.dto.PLayerDto;
 import com.nozdormu.entities.Player;
 
-public interface PlayerRepository extends JpaRepository<Player, Long>{
+public interface PlayerRepository extends CrudRepository<Player, Long>{
 	Player findPlayerByName(String name);
 	
 	Player findPlayerById(Long id);
