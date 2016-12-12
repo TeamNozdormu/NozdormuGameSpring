@@ -1,12 +1,13 @@
 package com.nozdormu.gamestates.interfaces;
 
-import org.springframework.stereotype.*;
+import java.awt.Graphics;
 
-import java.awt.*;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface Displayable {
 
-    default void display(Graphics g) {
+	default void display(Graphics g) {
 
-    };
+	};
 }

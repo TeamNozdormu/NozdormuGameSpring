@@ -1,16 +1,19 @@
 package com.nozdormu.gamestates.menustates.gameplay;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 import com.nozdormu.gameobjects.entities.ButtonOne;
 import com.nozdormu.gamestates.AbstractState;
 import com.nozdormu.gamestates.interfaces.ChooseClassState;
 import com.nozdormu.graphics.utililies.Assets;
 
-import java.awt.*;
-
 public class ChooseClassStateImpl extends AbstractState implements ChooseClassState {
 
     private static ButtonOne backButton = new ButtonOne(300, 480, Assets.button, "Back");
-    //TODO: Display the menu with options and listen for the event clicked
     private Rectangle archerButton;
     private Rectangle mageButton;
 
@@ -23,7 +26,8 @@ public class ChooseClassStateImpl extends AbstractState implements ChooseClassSt
         return backButton;
     }
 
-    private static void setBackButton(ButtonOne backButton) {
+    @SuppressWarnings("unused")
+	private static void setBackButton(ButtonOne backButton) {
         ChooseClassStateImpl.backButton = backButton;
     }
 

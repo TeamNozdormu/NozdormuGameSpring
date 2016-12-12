@@ -1,21 +1,24 @@
 package com.nozdormu.gamestates.interfaces;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public interface GameState {
 
-    long getLastTimeMissed();
+	long getLastTimeMissed();
 
-    long getNow();
+	long getNow();
 
-    int getEnemyTypes();
+	int getEnemyTypes();
 
-    public boolean isExplode();
+	public boolean isExplode();
 
-    int getCropX();
+	int getCropX();
 
-    int getCropY();
+	int getCropY();
 
-    int getCropXMonster();
+	int getCropXMonster();
 
-    int getCropYMonster();
+	int getCropYMonster();
 
 }
