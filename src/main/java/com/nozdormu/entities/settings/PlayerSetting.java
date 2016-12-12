@@ -1,4 +1,4 @@
-package com.nozdormu.entities.setting;
+package com.nozdormu.entities.settings;
 
 import javax.persistence.*;
 
