@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.nozdormu.dto.settings.GameSettingDto;
 import com.nozdormu.dto.settings.PlayerSettingDto;
-import com.nozdormu.entities.settings.PlayerSetting;
 import com.nozdormu.eventhandlers.KeyboardInput;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
 import com.nozdormu.gameobjects.interfaces.Game;
@@ -25,11 +24,11 @@ import com.nozdormu.gamestates.menustates.main.MainMenuStateImpl;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.Display;
 import com.nozdormu.graphics.GameMap;
+import com.nozdormu.parser.interfaces.ModelParser;
 import com.nozdormu.service.EnemyService;
 import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;
 import com.nozdormu.service.setting.PlayerSettingService;
-import com.nozdormu.utilities.GameSettings;
 
 @Service
 public class GameImpl implements Game, Serviceable, Runnable {
@@ -51,7 +50,6 @@ public class GameImpl implements Game, Serviceable, Runnable {
     private State IntroState;
     private State IntroTaskState;    
     
-    //spring game
     //settings
     private PlayerSettingDto playerSetting;
     private GameSettingDto gameSetting;
@@ -61,17 +59,20 @@ public class GameImpl implements Game, Serviceable, Runnable {
     private PlayerSettingService playerSettingService;
     private PlayerService playerService;
     private EnemyService enemyService;
+    private ModelParser modelParser;
        
     public GameImpl(
     		GameSettingService gameSettingService, 
     		PlayerSettingService playerSettingService,
     		PlayerService playerService,
-    		EnemyService enemyService) {
+    		EnemyService enemyService,
+    		ModelParser modelParser) {
 		super();
 		this.setGameSettingService(gameSettingService);
 		this.setPlayerSettingService(playerSettingService);
 		this.setPlayerService(playerService);
 		this.setEnemyService(enemyService);
+		this.setModelParser(modelParser);
 	}
 
     public boolean isRunning() {
@@ -249,6 +250,14 @@ public class GameImpl implements Game, Serviceable, Runnable {
 	public void setEnemyService(EnemyService enemyService) {
 		this.enemyService = enemyService;
 	}
+	
+	public ModelParser getModelParser() {
+		return this.modelParser;
+	}
+
+	public void setModelParser(ModelParser modelParser) {
+		this.modelParser = modelParser;
+	}
 
 	private void init() {
     	this.createGameSetting();
@@ -364,7 +373,8 @@ public class GameImpl implements Game, Serviceable, Runnable {
         long now;
         long lastTime = System.nanoTime();
         long timer = 0;
-        int ticks = 0;
+        @SuppressWarnings("unused")
+		int ticks = 0;
 
         while (this.isRunning) {
             now = System.nanoTime();
