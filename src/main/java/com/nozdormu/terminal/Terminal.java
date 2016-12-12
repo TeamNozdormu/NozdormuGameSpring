@@ -24,7 +24,7 @@ public class Terminal implements CommandLineRunner {
     private PlayerService playerService;
     
     @Autowired
-    private EnemyService enemyService;
+    private EnemyService enemyService;    
 	
 	@Override
 	public void run(String... arg0) throws Exception {			

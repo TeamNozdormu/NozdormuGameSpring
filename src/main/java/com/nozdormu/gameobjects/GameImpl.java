@@ -3,8 +3,11 @@ package com.nozdormu.gameobjects;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import com.nozdormu.entities.setting.GameSetting;
-import com.nozdormu.entities.setting.PlayerSetting;
+import org.springframework.stereotype.Service;
+
+import com.nozdormu.dto.settings.GameSettingDto;
+import com.nozdormu.dto.settings.PlayerSettingDto;
+import com.nozdormu.entities.settings.PlayerSetting;
 import com.nozdormu.eventhandlers.KeyboardInput;
 import com.nozdormu.eventhandlers.utilities.MouseInput;
 import com.nozdormu.gameobjects.interfaces.Game;
@@ -28,6 +31,7 @@ import com.nozdormu.service.setting.GameSettingService;
 import com.nozdormu.service.setting.PlayerSettingService;
 import com.nozdormu.utilities.GameSettings;
 
+@Service
 public class GameImpl implements Game, Serviceable, Runnable {
 
     public GameMap map;
@@ -45,20 +49,19 @@ public class GameImpl implements Game, Serviceable, Runnable {
     private State ChooseDifficulty;
     private State chooseSideState;
     private State IntroState;
-    private State IntroTaskState;
+    private State IntroTaskState;    
     
     //spring game
     //settings
-    private GameSetting gameSetting;
-    private PlayerSetting playerSetting;
-
+    private PlayerSettingDto playerSetting;
+    private GameSettingDto gameSetting;
+    
     //services
     private GameSettingService gameSettingService;
     private PlayerSettingService playerSettingService;
     private PlayerService playerService;
     private EnemyService enemyService;
-    
-    
+       
     public GameImpl(
     		GameSettingService gameSettingService, 
     		PlayerSettingService playerSettingService,
@@ -79,148 +82,140 @@ public class GameImpl implements Game, Serviceable, Runnable {
         this.isRunning = running;
     }
 
-    public GameMap getMap() {
-        return this.map;
-    }
-
-    private void setMap(GameMap map) {
-        this.map = map;
-    }
-
-    public Display getDisplay() {
-        return this.display;
-    }
-
-    private void setDisplay(Display display) {
-        this.display = display;
-    }
-
-    @SuppressWarnings("unused")
-	private MouseInput getMouseInput() {
-        return this.mouseInput;
-    }
-
-    private void setMouseInput(MouseInput mouseInput) {
-        this.mouseInput = mouseInput;
-    }
-
-    private Thread getThread() {
-        return this.thread;
-    }
-
-    private void setThread(Thread thread) {
-        this.thread = thread;
-    }
-
-    @SuppressWarnings("unused")
-    private KeyboardInput getKeyboardInput() {
-        return this.keyboardInput;
-    }
-
-    private void setKeyboardInput(KeyboardInput keyboardInput) {
-        this.keyboardInput = keyboardInput;
-    }
-
-    private BufferStrategy getBufferStrategy() {
-        return this.bufferStrategy;
-    }
-
-    private void setBufferStrategy(BufferStrategy bufferStrategy) {
-        this.bufferStrategy = bufferStrategy;
-    }
-
-    public Graphics getGraphics() {
-        return this.graphics;
-    }
-
-    private void setGraphics(Graphics graphics) {
-        this.graphics = graphics;
-    }
-
-    public State getGameState() {
-        return this.gameState;
-    }
-
-    private void setGameState(State gameState) {
-        this.gameState = gameState;
-    }
-
-    private AbstractState getMenuState() {
-        return this.menuState;
-    }
-
-    private void setMenuState(AbstractState menuState) {
-        this.menuState = menuState;
-    }
-
-    @SuppressWarnings("unused")
-    private State getGameOverState() {
-        return this.gameOverState;
-    }
-
-    private void setGameOverState(State gameOverState) {
-        this.gameOverState = gameOverState;
-    }
-
-    @SuppressWarnings("unused")
-	private State getHighScoreState() {
-        return this.highScoreState;
-    }
-
-    private void setHighScoreState(AbstractState highScoreState) {
-        this.highScoreState = highScoreState;
-    }
-
-    @SuppressWarnings("unused")
-	private State getChooseDifficulty() {
-        return this.ChooseDifficulty;
-    }
-
-    private void setChooseDifficulty(State chooseDifficulty) {
-        ChooseDifficulty = chooseDifficulty;
-    }
-
-    @SuppressWarnings("unused")
-	private State getChooseSideState() {
-        return this.chooseSideState;
-    }
-
-    private void setChooseSideState(AbstractState chooseSideState) {
-        this.chooseSideState = chooseSideState;
-    }
-
-    @SuppressWarnings("unused")
-    private State getIntroState() {
-        return this.IntroState;
-    }
-
-    private void setIntroState(State introState) {
-        IntroState = introState;
-    }
-
-    @SuppressWarnings("unused")
-    private State getIntroTaskState() {
-        return this.IntroTaskState;
-    }
-
-    private void setIntroTaskState(State introTaskState) {
-        IntroTaskState = introTaskState;
-    }
-    
-    public GameSetting getGameSetting() {
-		return this.gameSetting;
+	public GameMap getMap() {
+		return this.map;
 	}
 
-	public void setGameSetting(GameSetting gameSetting) {
-		this.gameSetting = gameSetting;
+	public void setMap(GameMap map) {
+		this.map = map;
 	}
-	
-	public PlayerSetting getPlayerSetting() {
+
+	public Display getDisplay() {
+		return this.display;
+	}
+
+	public void setDisplay(Display display) {
+		this.display = display;
+	}
+
+	public MouseInput getMouseInput() {
+		return this.mouseInput;
+	}
+
+	public void setMouseInput(MouseInput mouseInput) {
+		this.mouseInput = mouseInput;
+	}
+
+	public Thread getThread() {
+		return this.thread;
+	}
+
+	public void setThread(Thread thread) {
+		this.thread = thread;
+	}
+
+	public KeyboardInput getKeyboardInput() {
+		return this.keyboardInput;
+	}
+
+	public void setKeyboardInput(KeyboardInput keyboardInput) {
+		this.keyboardInput = keyboardInput;
+	}
+
+	public BufferStrategy getBufferStrategy() {
+		return this.bufferStrategy;
+	}
+
+	public void setBufferStrategy(BufferStrategy bufferStrategy) {
+		this.bufferStrategy = bufferStrategy;
+	}
+
+	public Graphics getGraphics() {
+		return this.graphics;
+	}
+
+	public void setGraphics(Graphics graphics) {
+		this.graphics = graphics;
+	}
+
+	public State getGameState() {
+		return this.gameState;
+	}
+
+	public void setGameState(State gameState) {
+		this.gameState = gameState;
+	}
+
+	public AbstractState getMenuState() {
+		return this.menuState;
+	}
+
+	public void setMenuState(AbstractState menuState) {
+		this.menuState = menuState;
+	}
+
+	public State getGameOverState() {
+		return this.gameOverState;
+	}
+
+	public void setGameOverState(State gameOverState) {
+		this.gameOverState = gameOverState;
+	}
+
+	public State getHighScoreState() {
+		return this.highScoreState;
+	}
+
+	public void setHighScoreState(State highScoreState) {
+		this.highScoreState = highScoreState;
+	}
+
+	public State getChooseDifficulty() {
+		return ChooseDifficulty;
+	}
+
+	public void setChooseDifficulty(State chooseDifficulty) {
+		ChooseDifficulty = chooseDifficulty;
+	}
+
+	public State getChooseSideState() {
+		return this.chooseSideState;
+	}
+
+	public void setChooseSideState(State chooseSideState) {
+		this.chooseSideState = chooseSideState;
+	}
+
+	public State getIntroState() {
+		return IntroState;
+	}
+
+	public void setIntroState(State introState) {
+		IntroState = introState;
+	}
+
+	public State getIntroTaskState() {
+		return IntroTaskState;
+	}
+
+	public void setIntroTaskState(State introTaskState) {
+		IntroTaskState = introTaskState;
+	}
+
+	public PlayerSettingDto getPlayerSetting() {
 		return this.playerSetting;
 	}
 
-	public void setPlayerSetting(PlayerSetting playerSetting) {
+	public void setPlayerSetting(PlayerSettingDto playerSetting) {
 		this.playerSetting = playerSetting;
+	}
+
+	public GameSettingDto getGameSetting() {
+		return this.gameSetting;
+	}
+
+	public void setGameSetting(GameSettingDto gameSetting) {
+		this.gameSetting = gameSetting;
 	}
 
 	public GameSettingService getGameSettingService() {
@@ -238,7 +233,7 @@ public class GameImpl implements Game, Serviceable, Runnable {
 	public void setPlayerSettingService(PlayerSettingService playerSettingService) {
 		this.playerSettingService = playerSettingService;
 	}
-	
+
 	public PlayerService getPlayerService() {
 		return this.playerService;
 	}
@@ -274,25 +269,23 @@ public class GameImpl implements Game, Serviceable, Runnable {
         StateManager.setCurrentState(this.getMenuState());
     }
 	
-	private void createGameSetting() {
-		this.setGameSetting(new GameSetting());
+	private void createGameSetting() {		
+		this.setGameSetting(new GameSettingDto());
 		this.getGameSetting().setGameHeight(600);
 		this.getGameSetting().setGameWidth(800);
-		this.getGameSetting().setGameName("Spring game Nozdormu version 1");
-		
+		this.getGameSetting().setGameName("Spring game Nozdormu version 1");		
 		//save game setting in DB
 		this.gameSettingService.create(this.getGameSetting());
 	}
 	
 	private void createPlayerSetting() {
-		this.setPlayerSetting(new PlayerSetting());
+		this.setPlayerSetting(new PlayerSettingDto());
 		this.getPlayerSetting().setDefaultName("Ivanof");
 		this.getPlayerSetting().setDefaultLocationX(this.getGameSetting().getGameWidth() / 2 - 40);	//GAME_WIDTH / 2 - 40;
 		this.getPlayerSetting().setDefaultLocationY(this.getGameSetting().getGameHeight() - 70);	//GAME_HEIGHT - 70
 		this.getPlayerSetting().setDefaultScores(0);
 		this.getPlayerSetting().setDefaultSpeed(15);
-		this.getPlayerSetting().setInitialNumberOfLives(3);
-		
+		this.getPlayerSetting().setInitialNumberOfLives(3);		
 		//save player setting in DB
 		this.playerSettingService.create(this.getPlayerSetting());
 	}
@@ -319,7 +312,7 @@ public class GameImpl implements Game, Serviceable, Runnable {
 
         this.setGraphics(bufferStrategy.getDrawGraphics());
         /////////DRAW HERE /////////////////
-        this.getGraphics().clearRect(0, 0, GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+        this.getGraphics().clearRect(0, 0, this.gameSetting.getGameWidth(), this.gameSetting.getGameHeight());
 
         if (StateManager.getCurrentState() != null) {
             StateManager.getCurrentState().display(graphics);
