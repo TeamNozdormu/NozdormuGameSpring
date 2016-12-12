@@ -2,7 +2,6 @@ package com.nozdormu.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.nozdormu.dto.PLayerDto;
 import com.nozdormu.entities.Player;
 
 public interface PlayerRepository extends CrudRepository<Player, Long>{
