@@ -2,6 +2,7 @@ package com.nozdormu.gameobjects.entities;
 
 import java.awt.image.BufferedImage;
 
+import com.nozdormu.dto.BulletDto;
 import com.nozdormu.gameobjects.base.AbstractBonus;
 import com.nozdormu.gameobjects.base.AbstractGameObject;
 import com.nozdormu.gameobjects.interfaces.Player;
@@ -106,13 +107,22 @@ public class PlayerImpl extends AbstractGameObject implements Player {
 
 	private void handleFireAction() {
 		if (isFiring) {
+			BulletImpl bulletImpl = null;
 			if (this.getCurrentBonus() != null) {
-				GameStateImpl.getBulletsList().add(
-						new BulletImpl(this.getX() + 16, this.getY(), this.getCurrentBonus().getMultiplierForDamage()));
-
+				bulletImpl = new BulletImpl(this.getX() + 16, this.getY(),
+						this.getCurrentBonus().getMultiplierForDamage());
+				GameStateImpl.getBulletsList().add(bulletImpl);
 			} else {
-				GameStateImpl.getBulletsList().add(new BulletImpl(this.getX() + 16, this.getY(), 1));
+				bulletImpl = new BulletImpl(this.getX() + 16, this.getY(), 1);
+				GameStateImpl.getBulletsList().add(bulletImpl);
 			}
+
+			BulletDto bulletDto = new BulletDto();
+			bulletDto.setLocationX(bulletImpl.getX());
+			bulletDto.setLocationY(bulletImpl.getY());
+			bulletDto.setSpeed(bulletImpl.getSpeed());
+
+			GameStateImpl.services.getBulletService().create(bulletDto);
 
 			isFiring = false;
 		}
