@@ -7,8 +7,6 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.nozdormu.dto.EnemyDto;
 import com.nozdormu.dto.PLayerDto;
 import com.nozdormu.entities.Player;
@@ -27,7 +25,6 @@ import com.nozdormu.gamestates.menustates.gameplay.GainLevelState;
 import com.nozdormu.gamestates.menustates.gameplay.GameOverState;
 import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.utililies.Assets;
-import com.nozdormu.service.EnemyService;
 import com.nozdormu.utilities.GameSettings;
 import com.nozdormu.utilities.PlayerSettings;
 import com.nozdormu.utilities.RandomGenerator;
@@ -49,17 +46,14 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 	private int cropX, cropY;
 	private int cropXMonster = 0, cropYMonster = 0;
 
-	private Serviceable services;
-	
-	@Autowired
-	private EnemyService enemyService;
-	
-	public GameStateImpl(Serviceable services) {
+	public static Serviceable services;
+
+	public GameStateImpl(Serviceable service) {
 		this();
-		this.setServices(services);
+		services = service;
 
 		this.createPlayerDto();
-		Player p = this.getServices().getPlayerService().getPlayerByID(1L);
+		Player p = services.getPlayerService().getPlayerByID(1L);
 		player = new PlayerImpl(p.getLocationX(), p.getLocationY(), p.getName(), p.getSpeed(), LEVEL_POINTS);
 		factory = new Factory();
 		bulletsList = new LinkedList<>();
@@ -71,9 +65,8 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 	}
 
 	public GameStateImpl() {
-		super();
 		if (!isLevelGained) {
-			GameStateImpl.score = 0;
+			score = 0;
 		} else {
 			isLevelGained = false;
 		}
@@ -81,11 +74,11 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		init();
 
 		if (MouseInput.isEasyButton) {
-			GameStateImpl.LEVEL_POINTS = 400;
+			LEVEL_POINTS = 400;
 		} else if (MouseInput.isMediumButton) {
-			GameStateImpl.LEVEL_POINTS = 800;
+			LEVEL_POINTS = 800;
 		} else {
-			GameStateImpl.LEVEL_POINTS = 1200;
+			LEVEL_POINTS = 1200;
 		}
 
 	}
@@ -186,14 +179,6 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		this.cropYMonster = cropYMonster;
 	}
 
-	public Serviceable getServices() {
-		return this.services;
-	}
-
-	public void setServices(Serviceable services) {
-		this.services = services;
-	}
-
 	public void init() {
 		Assets.init();
 	}
@@ -202,7 +187,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		// TODO get configuration from DB
 		PLayerDto playerDto = new PLayerDto("ivanof", 3, 0, 0, PlayerSettings.PLAYER_SET_X, PlayerSettings.PLAYER_SET_Y,
 				PlayerSettings.PLAYER_DEFAULT_SPEED);
-		this.getServices().getPlayerService().create(playerDto);
+		services.getPlayerService().create(playerDto);
 	}
 
 	private void insertEnemyInDatabase(AbstractEnemy e, EnemyType type) {
@@ -212,7 +197,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		enemyDto.setLocationX(e.getX());
 		enemyDto.setLocationY(e.getY());
 		enemyDto.setSpeedMultiplier(e.getSpeed());
-		this.getServices().getEnemyService().create(enemyDto);
+		services.getEnemyService().create(enemyDto);
 	}
 
 	private void addNewSturdyEnemy(int numberOfSturdyEnemies) {
@@ -220,7 +205,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 				RandomGenerator.getNextIntRandom(GameSettings.GAME_WIDTH - 100), -100,
 				RandomGenerator.getNextIntRandom(4), RandomGenerator.getNextIntRandom(PlayerImpl.getLevel() + 1));
 		getEnemiesList().add(sturdyEnemy);
-//		this.insertEnemyInDatabase(sturdyEnemy, EnemyType.STURDY);
+		this.insertEnemyInDatabase(sturdyEnemy, EnemyType.STURDY);
 		this.setEnemyTypes(0);
 	}
 
@@ -228,7 +213,7 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		AbstractEnemy easyEnemy = getFactory()
 				.createEasyEnemy(RandomGenerator.getNextIntRandom(GameSettings.GAME_WIDTH - 100), -100, 1, 2);
 		getEnemiesList().add(easyEnemy);
-//		this.insertEnemyInDatabase(easyEnemy, EnemyType.EASY);
+		this.insertEnemyInDatabase(easyEnemy, EnemyType.EASY);
 	}
 
 	private void gameOver() {
@@ -302,8 +287,8 @@ public class GameStateImpl extends AbstractState implements GameState, Displayab
 		}
 
 		// change difficulty
-		if (getEnemiesList().size() < 5) {
-			if (this.getEnemyTypes() == 5) {
+		if (getEnemiesList().size() < 6) {
+			if (this.getEnemyTypes() == 6) {
 				this.addNewSturdyEnemy(PlayerImpl.getLevel());
 			} else {
 				this.addNewEasyEnemy();

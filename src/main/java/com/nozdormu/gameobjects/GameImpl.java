@@ -3,7 +3,7 @@ package com.nozdormu.gameobjects;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.nozdormu.dto.settings.GameSettingDto;
 import com.nozdormu.dto.settings.PlayerSettingDto;
@@ -25,12 +25,13 @@ import com.nozdormu.gamestates.utilities.StateManager;
 import com.nozdormu.graphics.Display;
 import com.nozdormu.graphics.GameMap;
 import com.nozdormu.parser.interfaces.ModelParser;
+import com.nozdormu.service.BulletService;
 import com.nozdormu.service.EnemyService;
 import com.nozdormu.service.PlayerService;
 import com.nozdormu.service.setting.GameSettingService;
 import com.nozdormu.service.setting.PlayerSettingService;
 
-@Service
+@Component
 public class GameImpl implements Game, Serviceable, Runnable {
 
     public GameMap map;
@@ -60,19 +61,22 @@ public class GameImpl implements Game, Serviceable, Runnable {
     private PlayerService playerService;
     private EnemyService enemyService;
     private ModelParser modelParser;
+    private BulletService bulletService;
        
     public GameImpl(
     		GameSettingService gameSettingService, 
     		PlayerSettingService playerSettingService,
     		PlayerService playerService,
     		EnemyService enemyService,
-    		ModelParser modelParser) {
+    		ModelParser modelParser,
+    		BulletService bulletService) {
 		super();
 		this.setGameSettingService(gameSettingService);
 		this.setPlayerSettingService(playerSettingService);
 		this.setPlayerService(playerService);
 		this.setEnemyService(enemyService);
 		this.setModelParser(modelParser);
+		this.setBulletService(bulletService);
 	}
 
     public boolean isRunning() {
@@ -258,6 +262,14 @@ public class GameImpl implements Game, Serviceable, Runnable {
 	public void setModelParser(ModelParser modelParser) {
 		this.modelParser = modelParser;
 	}
+	
+	public BulletService getBulletService() {
+		return this.bulletService;
+	}
+
+	public void setBulletService(BulletService bulletService) {
+		this.bulletService = bulletService;
+	}
 
 	private void init() {
     	this.createGameSetting();
@@ -266,8 +278,7 @@ public class GameImpl implements Game, Serviceable, Runnable {
     	this.createDisplay();  
         this.setKeyboardInput(new KeyboardInput(this, this.getDisplay()));
         this.setMouseInput(new MouseInput(this.getDisplay()));
-        this.setGameState(new GameStateImpl(this));
-        
+        this.setGameState(new GameStateImpl(this));        
         this.setMenuState(new MainMenuStateImpl());
         this.setChooseDifficulty(new ChooseDifficultyStateImpl());
         this.setChooseSideState(new ChooseSideStateImpl());
