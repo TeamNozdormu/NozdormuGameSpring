@@ -3,7 +3,9 @@ package com.nozdormu.serviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nozdormu.dto.BulletDto;
 import com.nozdormu.entities.Bullet;
+import com.nozdormu.parser.interfaces.ModelParser;
 import com.nozdormu.repository.BulletRepository;
 import com.nozdormu.service.BulletService;
 
@@ -13,8 +15,12 @@ public class BulletServiceImpl implements BulletService{
 	@Autowired
 	private BulletRepository bulletRepository;
 	
+	@Autowired
+	private ModelParser modelParser;
+	
 	@Override
-	public void create(Bullet bullet) {
+	public void create(BulletDto bulletDto) {
+		Bullet bullet = this.modelParser.convert(bulletDto, Bullet.class);
 		this.getBulletRepository().save(bullet);
 	}
 

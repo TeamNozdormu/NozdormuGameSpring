@@ -1,8 +1,8 @@
 package com.nozdormu.service;
 
-import com.nozdormu.entities.Bullet;
+import com.nozdormu.dto.BulletDto;
 
 public interface BulletService {
 
-	void create(Bullet bullet);
+	void create(BulletDto bullet);
 }
